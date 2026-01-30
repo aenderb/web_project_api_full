@@ -37,6 +37,9 @@ const env = z
 const { PORT = 3000 } = process.env;
 const app = express();
 
+// Configura o Express para confiar em proxies (necessário para rate limiting em produção)
+app.set("trust proxy", 1);
+
 mongoose.connect(
   // eslint-disable-next-line comma-dangle
   env.MONGODB_URI,
