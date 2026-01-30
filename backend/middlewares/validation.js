@@ -1,11 +1,19 @@
 const { Joi } = require("celebrate");
 const validator = require("validator");
+const mongoose = require("mongoose");
 
 const validateURL = (value, helpers) => {
   if (validator.isURL(value)) {
     return value;
   }
   return helpers.error("string.uri");
+};
+
+const validateObjectId = (value, helpers) => {
+  if (mongoose.Types.ObjectId.isValid(value)) {
+    return value;
+  }
+  return helpers.error("string.pattern.base");
 };
 
 const validateLogin = {
@@ -40,7 +48,7 @@ const validateUpdateAvatar = {
 
 const validateUserId = {
   params: Joi.object().keys({
-    id: Joi.string().required().hex().length(24),
+    id: Joi.string().required().custom(validateObjectId),
   }),
 };
 
@@ -53,8 +61,7 @@ const validateCreateCard = {
 
 const validateCardId = {
   params: Joi.object().keys({
-    id: Joi.string().required().hex().length(24),
-    cardId: Joi.string().hex().length(24),
+    cardId: Joi.string().required().custom(validateObjectId),
   }),
 };
 

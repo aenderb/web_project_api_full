@@ -17,12 +17,15 @@ function EditProfilePopup({ isLoadingUserInfo, isOpen, onClose }) {
   const [nameError, setNameError] = useState("");
   const [aboutError, setAboutError] = useState("");
 
-  const handleClose = () => {
-    // Reseta os campos para os valores originais ao fechar
+  const resetForm = () => {
     setName(currentUser.name || "");
     setAbout(currentUser.about || "");
     setNameError("");
     setAboutError("");
+  };
+
+  const handleClose = () => {
+    resetForm();
     onClose();
   };
 

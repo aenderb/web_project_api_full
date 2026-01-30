@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import PopupWithForm from "../PopupWithForm/PopupWithForm.jsx";
 import {
   validateAddPlaceForm,
@@ -24,12 +24,21 @@ function AddPlacePopup({
   const [titleError, setTitleError] = useState(INITIAL_STATE.titleError);
   const [urlError, setUrlError] = useState(INITIAL_STATE.urlError);
 
-  const handleClose = () => {
-    // Reseta os campos ao fechar
+  const resetForm = () => {
     setTitle(INITIAL_STATE.title);
     setUrl(INITIAL_STATE.url);
     setTitleError(INITIAL_STATE.titleError);
     setUrlError(INITIAL_STATE.urlError);
+  };
+
+  // Reseta o formulário quando o popup fecha
+  useEffect(() => {
+    if (!isOpen) {
+      resetForm();
+    }
+  }, [isOpen]);
+
+  const handleClose = () => {
     onClose();
   };
 

@@ -1,4 +1,4 @@
-import { useState, useRef, useContext, useCallback } from "react";
+import { useState, useRef, useContext, useCallback, useEffect } from "react";
 import PopupWithForm from "../PopupWithForm/PopupWithForm";
 import {
   validateAvatarUrl,
@@ -18,13 +18,22 @@ function EditAvatarPopup({ isLoadingAvatar, isOpen, onClose }) {
 
   const { handleUpdateAvatar } = useContext(CurrentUserContext);
 
-  const handleClose = () => {
-    // Reseta os campos ao fechar
+  const resetForm = () => {
     setAvatarUrl(INITIAL_STATE.avatarUrl);
     setAvatarError(INITIAL_STATE.avatarError);
     if (avatarInputRef.current) {
       avatarInputRef.current.value = INITIAL_STATE.avatarUrl;
     }
+  };
+
+  // Reseta o formulário quando o popup fecha
+  useEffect(() => {
+    if (!isOpen) {
+      resetForm();
+    }
+  }, [isOpen]);
+
+  const handleClose = () => {
     onClose();
   };
 

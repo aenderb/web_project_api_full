@@ -30,6 +30,14 @@ function App() {
     message: "",
   });
 
+  // Função helper para adicionar isLiked aos cards
+  const processCards = useCallback((cards, userId) => {
+    return cards.map(card => ({
+      ...card,
+      isLiked: card.likes.some(id => id === userId)
+    }));
+  }, []);
+
   const handleRegister = useCallback(async (email, password) => {
     try {
       await auth.register(email, password);
@@ -66,9 +74,9 @@ function App() {
           // Carregar dados do usuário após login
           const userData = await auth.checkToken(data.token);
           const cardsData = await api.getInitialCards();
-          
+
           setCurrentUser(userData);
-          setCards(cardsData);
+          setCards(processCards(cardsData, userData._id));
 
           navigate("/");
         }
@@ -104,9 +112,9 @@ function App() {
         // Verifica o token e busca dados do usuário
         const userData = await auth.checkToken(token);
         const cardsData = await api.getInitialCards();
-        
+
         setCurrentUser(userData);
-        setCards(cardsData);
+        setCards(processCards(cardsData, userData._id));
         setIsLoggedIn(true);
       } catch (err) {
         console.error(err + " - Erro ao verificar token");
@@ -145,17 +153,26 @@ function App() {
     [handleClosePopup],
   );
 
-  const handleCardLike = useCallback(async (card) => {
-    try {
-      const newCard = await api.changeLikeCardStatus(card._id, card.isLiked);
+  const handleCardLike = useCallback(
+    async (card) => {
+      try {
+        const newCard = await api.changeLikeCardStatus(card._id, card.isLiked);
 
-      setCards((prevCards) =>
-        prevCards.map((c) => (c._id === card._id ? newCard : c)),
-      );
-    } catch (err) {
-      console.error(err + " - Erro ao alterar status de like");
-    }
-  }, []);
+        // Adiciona isLiked ao card retornado
+        const processedCard = {
+          ...newCard,
+          isLiked: newCard.likes.some((id) => id === currentUser._id),
+        };
+
+        setCards((prevCards) =>
+          prevCards.map((c) => (c._id === card._id ? processedCard : c)),
+        );
+      } catch (err) {
+        console.error(err + " - Erro ao alterar status de like");
+      }
+    },
+    [currentUser._id],
+  );
 
   const handleUpdateUser = useCallback(
     async (data) => {
@@ -178,7 +195,11 @@ function App() {
       setIsLoadingAddCard(true);
       try {
         const newCard = await api.createCard(data);
-        setCards((prevCards) => [newCard, ...prevCards]);
+        const processedCard = {
+          ...newCard,
+          isLiked: false, // Novo card nunca tem like do usuário atual
+        };
+        setCards((prevCards) => [processedCard, ...prevCards]);
         handleClosePopup();
       } catch (err) {
         console.error(err + " - Erro ao adicionar novo card");
