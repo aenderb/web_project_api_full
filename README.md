@@ -311,7 +311,7 @@ server {
 4. **SSL Setup**
 ```bash
 sudo apt install certbot python3-certbot-nginx
-sudo certbot --nginx -d www.euaafora.pualo.com
+sudo certbot --nginx -d api.euaafora.pualo.com
 ```
 
 5. **Deploy Frontend**
