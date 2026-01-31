@@ -2,7 +2,7 @@
 
 A production-ready fullstack photo-sharing social network built with Node.js, Express, MongoDB, and React. Features complete JWT authentication, real-time interactions, and professional deployment on Google Cloud Platform.
 
-🌐 **Live Production API**: https://www.euaafora.pualo.com  
+🌐 **Live Production API**: https://api.euaafora.pualo.com  
 🌐 **Live Frontend**: https://euaafora.pualo.com
 
 ## 📋 About The Project
@@ -176,7 +176,7 @@ VITE_API_BASE_URL=http://localhost:3000
 
 Create `.env.production` file:
 ```env
-VITE_API_BASE_URL=https://www.euaafora.pualo.com
+VITE_API_BASE_URL=https://api.euaafora.pualo.com
 ```
 
 Start development server:
@@ -292,7 +292,7 @@ pm2 startup
 ```nginx
 server {
     listen 80;
-    server_name www.euaafora.pualo.com;
+    server_name api.euaafora.pualo.com;
 
     location / {
         proxy_pass http://localhost:3000;
