@@ -96,6 +96,13 @@ const apiLimiter = rateLimit({
 // Aplica rate limiting geral em todas as rotas
 app.use(apiLimiter);
 
+// Rota para testar recuperação automática do servidor
+app.get("/crash-test", () => {
+  setTimeout(() => {
+    throw new Error("O servidor vai cair");
+  }, 0);
+});
+
 app.post("/signin", authLimiter, celebrate(validateLogin), login);
 app.post("/signup", authLimiter, celebrate(validateCreateUser), createUser);
 
