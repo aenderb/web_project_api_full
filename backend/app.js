@@ -75,10 +75,10 @@ app.use(express.json());
 // Middleware de logging de requisições
 app.use(requestLogger);
 
-// Rate limiting para autenticação - mais restritivo
+// Rate limiting para autenticação - mais permissivo em desenvolvimento
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutos
-  max: 5, // 5 tentativas por IP
+  max: process.env.NODE_ENV === "production" ? 5 : 100, // 5 em prod, 100 em dev
   message: "Muitas tentativas de autenticação. Tente novamente em 15 minutos.",
   standardHeaders: true,
   legacyHeaders: false,

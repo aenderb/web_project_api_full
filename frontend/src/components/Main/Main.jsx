@@ -153,8 +153,8 @@ function Main({
         onClose={onClosePopup}
       />
 
-      {popup && !popup.type && (
-        <ImagePopup image={popup} onClose={onClosePopup} />
+      {popup && !popup.type && popup.card && (
+        <ImagePopup image={popup.card} onClose={onClosePopup} />
       )}
     </main>
   );

@@ -32,9 +32,9 @@ function App() {
 
   // Função helper para adicionar isLiked aos cards
   const processCards = useCallback((cards, userId) => {
-    return cards.map(card => ({
+    return cards.map((card) => ({
       ...card,
-      isLiked: card.likes.some(id => id === userId)
+      isLiked: card.likes.some((id) => id === userId),
     }));
   }, []);
 
@@ -146,6 +146,16 @@ function App() {
         handleClosePopup();
       } catch (err) {
         console.error(err + " - Erro ao deletar card");
+        handleClosePopup();
+
+        // Verifica se é erro de permissão (403)
+        if (err.includes("403")) {
+          setInfoTooltipStatus({
+            isSuccess: false,
+            message: "Você não tem permissão para excluir esta imagem.",
+          });
+          setIsInfoTooltipOpen(true);
+        }
       } finally {
         setIsLoadingDeleteCard(false);
       }

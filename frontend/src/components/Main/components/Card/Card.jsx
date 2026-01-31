@@ -3,8 +3,7 @@ import React from "react";
 import ImagePopup from "../Popup/components/ImagePopup/ImagePopup";
 function Card({ card, onCardLike, onImageClick, onTrashClick }) {
   const imageComponent = {
-    title: null,
-    children: <ImagePopup card={card} />,
+    card: card,
   };
 
   const removeCardPopup = {
