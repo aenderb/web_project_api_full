@@ -1,161 +1,398 @@
-# Around - Rede Social de Fotos 📸
+# 🚀 Around The U.S. – Fullstack Social Network
 
-Aplicação fullstack completa de uma rede social para compartilhamento de fotos, desenvolvida com Node.js + React. O projeto implementa autenticação JWT, sistema de likes, gerenciamento de perfis e galeria de imagens.
+A production-ready fullstack photo-sharing social network built with Node.js, Express, MongoDB, and React. Features complete JWT authentication, real-time interactions, and professional deployment on Google Cloud Platform.
 
-## 📋 Sobre o Projeto
+🌐 **Live Production API**: https://www.euaafora.pualo.com  
+🌐 **Live Frontend**: https://euaafora.pualo.com
 
-Around é uma plataforma web que permite aos usuários compartilhar suas fotos favoritas, interagir com publicações através de likes e gerenciar seu perfil pessoal. O projeto é dividido em duas partes principais:
+## 📋 About The Project
 
-- **Backend**: API REST com Node.js, Express e MongoDB
-- **Frontend**: Interface responsiva em React com autenticação
+Around The U.S. is a modern social media platform that allows users to share their favorite photos, interact with posts through likes, and manage their personal profiles. This fullstack application demonstrates professional-grade development practices including:
 
-## ✨ Funcionalidades
+- **Backend**: RESTful API with Node.js, Express, and MongoDB Atlas
+- **Frontend**: Responsive React SPA with protected routes and context management
+- **Production**: Deployed on Google Cloud Platform with PM2 process management
 
-- 🔐 **Autenticação completa** - Registro, login e proteção de rotas
-- 👤 **Gerenciamento de perfil** - Edição de nome, descrição e avatar
-- 📷 **Galeria de fotos** - Criar, visualizar e deletar cards
-- ❤️ **Sistema de likes** - Curtir e descurtir publicações
-- 🔒 **Segurança** - Senhas criptografadas com bcrypt e tokens JWT
-- 📱 **Design responsivo** - Interface adaptável para desktop, tablet e mobile
-- ✅ **Validação de dados** - Formulários com validação em tempo real
+## ✨ Features
 
-## 🛠️ Tecnologias Utilizadas
+- 🔐 **Complete Authentication** - User registration, login, and JWT-based authorization
+- 👤 **Profile Management** - Edit name, bio, and avatar with real-time updates
+- 📷 **Photo Gallery** - Create, view, and delete photo cards
+- ❤️ **Like System** - Like and unlike posts with instant visual feedback
+- 🔒 **Security** - Bcrypt password hashing, JWT tokens, rate limiting, and CORS protection
+- 🚦 **Error Handling** - Centralized error handling with custom error classes
+- 📝 **Request Logging** - Winston-based logging for debugging and monitoring
+- 🛡️ **Input Validation** - Celebrate/Joi validation for all API endpoints
+- 📱 **Responsive Design** - Mobile-first UI that works on all devices
+- ⚡ **Auto-recovery** - PM2 ensures server automatically restarts after crashes
+
+## 🛠 Tech Stack
 
 ### Backend
-- Node.js & Express
-- MongoDB & Mongoose
-- JWT (jsonwebtoken)
-- bcryptjs
-- Zod & dotenv
-- Winston (logging)
-- ESLint (Airbnb Style Guide)
+- **Runtime**: Node.js v18+
+- **Framework**: Express 5.x
+- **Database**: MongoDB Atlas (Cloud)
+- **Authentication**: JWT (jsonwebtoken) + bcryptjs
+- **Validation**: Celebrate (Joi)
+- **Environment**: dotenv with separate dev/production configs
+- **Logging**: Winston with file rotation
+- **Security**: express-rate-limit, CORS, helmet
+- **Code Quality**: ESLint (Airbnb Style Guide)
 
 ### Frontend
-- React 18
-- React Router DOM
-- Vite
-- CSS3 (Metodologia BEM)
-- Fetch API
+- **Library**: React 18
+- **Build Tool**: Vite
+- **Routing**: React Router DOM v6
+- **State Management**: Context API
+- **Styling**: CSS3 with BEM methodology
+- **HTTP Client**: Fetch API
+- **Code Quality**: ESLint (Airbnb Style)
 
-## 📁 Estrutura do Projeto
+### DevOps & Production
+- **Cloud Platform**: Google Cloud Platform (GCP)
+- **Process Manager**: PM2
+- **Version Control**: Git & GitHub
+- **Domain**: Custom domain with SSL/TLS
+
+## 📁 Project Structure
 
 ```
 web_project_api_full/
-├── backend/              # API REST
-│   ├── controllers/      # Lógica de negócio
-│   ├── models/          # Schemas do MongoDB
-│   ├── routes/          # Rotas da API
-│   ├── middlewares/     # Auth, validação e erros
-│   ├── errors/          # Classes de erros customizados
-│   └── utils/           # Constantes e helpers
+├── backend/                    # RESTful API Server
+│   ├── controllers/            # Business logic handlers
+│   │   ├── users.js           # User operations
+│   │   └── cards.js           # Card operations
+│   ├── models/                # MongoDB Mongoose schemas
+│   │   ├── user.js            # User model with validation
+│   │   └── card.js            # Card model with relations
+│   ├── routes/                # API route definitions
+│   │   ├── users.js           # User endpoints
+│   │   └── cards.js           # Card endpoints
+│   ├── middlewares/           # Express middlewares
+│   │   ├── auth.js            # JWT verification
+│   │   ├── validation.js      # Celebrate validators
+│   │   ├── errorHandler.js    # Centralized error handling
+│   │   └── logger.js          # Winston logging
+│   ├── errors/                # Custom error classes
+│   │   ├── BadRequestError.js
+│   │   ├── UnauthorizedError.js
+│   │   ├── ForbiddenError.js
+│   │   ├── NotFoundError.js
+│   │   └── ConflictError.js
+│   ├── utils/                 # Utility functions
+│   │   └── constants.js       # App constants
+│   ├── .env.development       # Dev environment vars
+│   ├── .env.production        # Production environment vars
+│   ├── app.js                 # Express app setup
+│   └── package.json
 │
-├── frontend/            # Interface React
+├── frontend/                   # React SPA
 │   ├── src/
-│   │   ├── components/  # Componentes React
-│   │   ├── contexts/    # Context API
-│   │   ├── utils/       # API calls e validações
-│   │   └── blocks/      # Estilos CSS (BEM)
-│   └── public/          # Assets estáticos
+│   │   ├── components/         # React components
+│   │   │   ├── App.jsx        # Main app component
+│   │   │   ├── Header/        # Navigation header
+│   │   │   ├── Main/          # Main content & cards
+│   │   │   ├── Footer/        # App footer
+│   │   │   ├── Login/         # Login form
+│   │   │   ├── Register/      # Registration form
+│   │   │   ├── ProtectedRoute.jsx
+│   │   │   ├── PublicRoute.jsx
+│   │   │   ├── InfoTooltip/   # Success/error messages
+│   │   │   └── Loader/        # Loading spinner
+│   │   ├── contexts/           # React Context
+│   │   │   └── CurrentUserContext.js
+│   │   ├── utils/             # Helper functions
+│   │   │   ├── api.js         # API client
+│   │   │   ├── auth.js        # Auth API calls
+│   │   │   ├── localStorage.js # Storage helpers
+│   │   │   └── *FormValidation.js # Form validators
+│   │   ├── blocks/            # CSS modules (BEM)
+│   │   ├── images/            # Static assets
+│   │   └── main.jsx           # React entry point
+│   ├── .env.development       # Dev API URL
+│   ├── .env.production        # Production API URL
+│   ├── vite.config.js         # Vite configuration
+│   └── package.json
 │
-└── README.md           # Este arquivo
+└── README.md                  # This file
 ```
 
-## 🚀 Como Rodar o Projeto
+## 🚀 Getting Started
 
-### Pré-requisitos
-- Node.js (v14+)
-- MongoDB instalado e rodando
-- npm ou yarn
+### Prerequisites
+- Node.js (v18 or higher)
+- npm or yarn
+- MongoDB (local or Atlas)
+- Git
 
-### 1. Clonar o Repositório
+### Local Development Setup
+
+#### 1. Clone the Repository
 ```bash
 git clone https://github.com/aenderb/web_project_around_express.git
 cd web_project_api_full
 ```
 
-### 2. Configurar o Backend
+#### 2. Backend Setup
 
 ```bash
 cd backend
 npm install
 ```
 
-Crie um arquivo `.env` na pasta backend:
+Create `.env.development` file:
 ```env
 PORT=3000
-MONGODB_URI=mongodb://admin:Mongo1234@localhost:27017/arounddb?authSource=admin
-JWT_SECRET=sua-chave-secreta-aqui
+MONGODB_URI=mongodb://admin:password@localhost:27017/arounddb?authSource=admin
+JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
 ALLOWED_ORIGINS=http://localhost:5173
 ```
 
-Inicie o servidor:
+Create `.env.production` file:
+```env
+PORT=3000
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/arounddb
+JWT_SECRET=your-production-secret-key
+ALLOWED_ORIGINS=https://euaafora.pualo.com
+```
+
+Start development server:
 ```bash
 npm run dev
 ```
 
-### 3. Configurar o Frontend
+#### 3. Frontend Setup
 
-Em outro terminal:
+Open a new terminal:
 ```bash
 cd frontend
 npm install
+```
+
+Create `.env.development` file:
+```env
+VITE_API_BASE_URL=http://localhost:3000
+```
+
+Create `.env.production` file:
+```env
+VITE_API_BASE_URL=https://www.euaafora.pualo.com
+```
+
+Start development server:
+```bash
 npm run dev
 ```
 
-### 4. Acessar a Aplicação
+#### 4. Access the Application
 
-- Frontend: http://localhost:5173
-- Backend: http://localhost:3000
+- **Frontend**: http://localhost:5173
+- **Backend API**: http://localhost:3000
 
-## 📡 Endpoints da API
+## 📡 API Endpoints
 
-### Autenticação
-- `POST /signup` - Registrar novo usuário
-- `POST /signin` - Login de usuário
+### Public Endpoints
+| Method | Endpoint | Description | Body |
+|--------|----------|-------------|------|
+| POST | `/signup` | Register new user | `{ email, password }` |
+| POST | `/signin` | Login user | `{ email, password }` |
 
-### Usuários (Protegido)
-- `GET /users` - Listar todos os usuários
-- `GET /users/me` - Obter usuário atual
-- `PATCH /users/me` - Atualizar perfil
-- `PATCH /users/me/avatar` - Atualizar avatar
+### Protected Endpoints (Requires JWT)
 
-### Cartões (Protegido)
-- `GET /cards` - Listar todos os cards
-- `POST /cards` - Criar novo card
-- `DELETE /cards/:id` - Deletar card
-- `PUT /cards/:id/likes` - Curtir card
-- `DELETE /cards/:id/likes` - Descurtir card
+#### Users
+| Method | Endpoint | Description | Body |
+|--------|----------|-------------|------|
+| GET | `/users` | Get all users | - |
+| GET | `/users/me` | Get current user | - |
+| PATCH | `/users/me` | Update profile | `{ name, about }` |
+| PATCH | `/users/me/avatar` | Update avatar | `{ avatar }` |
 
-## 🔒 Segurança
+#### Cards
+| Method | Endpoint | Description | Body |
+|--------|----------|-------------|------|
+| GET | `/cards` | Get all cards | - |
+| POST | `/cards` | Create new card | `{ name, link }` |
+| DELETE | `/cards/:cardId` | Delete card | - |
+| PUT | `/cards/:cardId/likes` | Like card | - |
+| DELETE | `/cards/:cardId/likes` | Unlike card | - |
 
-- Senhas criptografadas com bcrypt (salt rounds: 10)
-- Autenticação via JWT com expiração de 7 dias
-- Proteção de rotas com middleware de autenticação
-- Validação de dados com Zod e Mongoose
-- CORS configurado para origens permitidas
-- Variáveis de ambiente para dados sensíveis
+#### Testing
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/crash-test` | Test server recovery (PM2) |
 
-## 📱 Responsividade
+### Authentication
+All protected routes require an `Authorization` header:
+```
+Authorization: Bearer <jwt_token>
+```
 
-O frontend é totalmente responsivo com breakpoints para:
-- Desktop (> 880px)
-- Tablet (880px)
-- Mobile (320px)
+## 🔒 Security Features
 
-## 📚 Documentação Adicional
+- **Password Security**: Bcrypt hashing with 10 salt rounds
+- **JWT Authentication**: Tokens expire after 7 days
+- **Rate Limiting**: 
+  - Auth endpoints: 5 attempts per 15 minutes (production) / 100 (development)
+  - General API: 100 requests per 15 minutes
+- **CORS Protection**: Configurable allowed origins
+- **Input Validation**: Server-side validation with Celebrate/Joi
+- **Error Handling**: No sensitive information leaked in errors
+- **Trust Proxy**: Configured for production reverse proxy
+- **Environment Variables**: Sensitive data never committed to repository
 
-Para mais detalhes sobre cada parte do projeto:
-- [Backend README](./backend/README.md)
-- [Frontend README](./frontend/README.md)
+## 🌐 Production Deployment (GCP)
 
-## 🎓 Projeto Desenvolvido
+The application is deployed on **Google Cloud Platform** with the following setup:
 
-Este projeto foi desenvolvido como parte do programa de estudos da **Tripleten Brasil**, aplicando conceitos de desenvolvimento fullstack, arquitetura REST e melhores práticas de segurança.
+### Infrastructure
+- **Compute Engine**: Ubuntu VM instance
+- **Database**: MongoDB Atlas (cloud-hosted)
+- **Process Manager**: PM2 for auto-restart and monitoring
+- **Web Server**: Nginx as reverse proxy
+- **SSL/TLS**: Let's Encrypt certificates
+- **Domain**: Custom domain with DNS configuration
 
-## 📝 Licença
+### Deployment Steps
 
-Este projeto está sob a licença MIT.
+1. **Server Setup**
+```bash
+# Update system
+sudo apt update && sudo apt upgrade -y
+
+# Install Node.js
+curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+sudo apt install -y nodejs
+
+# Install PM2 globally
+sudo npm install -g pm2
+
+# Install Nginx
+sudo apt install -y nginx
+```
+
+2. **Deploy Backend**
+```bash
+# Clone repository
+git clone <your-repo-url>
+cd web_project_api_full/backend
+
+# Install dependencies
+npm install --production
+
+# Setup environment
+cp .env.production .env
+
+# Start with PM2
+pm2 start app.js --name "api-full"
+pm2 save
+pm2 startup
+```
+
+3. **Configure Nginx**
+```nginx
+server {
+    listen 80;
+    server_name www.euaafora.pualo.com;
+
+    location / {
+        proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+```
+
+4. **SSL Setup**
+```bash
+sudo apt install certbot python3-certbot-nginx
+sudo certbot --nginx -d www.euaafora.pualo.com
+```
+
+5. **Deploy Frontend**
+```bash
+cd ../frontend
+npm install
+npm run build
+
+# Copy build files to Nginx
+sudo cp -r dist/* /var/www/html/
+```
+
+### Monitoring & Maintenance
+```bash
+# View logs
+pm2 logs api-full
+
+# Monitor processes
+pm2 monit
+
+# Restart server
+pm2 restart api-full
+
+# View status
+pm2 status
+```
+
+## 📱 Responsive Design
+
+The frontend is fully responsive with breakpoints:
+- **Mobile**: 320px - 767px
+- **Tablet**: 768px - 1023px
+- **Desktop**: 1024px+
+
+## 🧪 Testing
+
+### Manual Testing
+1. Register a new user
+2. Login with credentials
+3. Edit profile information
+4. Upload profile avatar
+5. Create new photo cards
+6. Like/unlike cards
+7. Delete own cards
+8. Test protected routes
+9. Test crash recovery (`GET /crash-test`)
+
+### Error Scenarios
+- Invalid credentials
+- Duplicate email registration
+- Unauthorized card deletion
+- Rate limit exceeded
+- Invalid JWT token
+
+## 📚 Documentation
+
+For detailed information about each part:
+- [Backend Documentation](./backend/README.md)
+- [Frontend Documentation](./frontend/README.md)
+
+## 🎓 Project Development
+
+This fullstack project was developed as part of the **TripleTen Brasil** curriculum, demonstrating:
+- RESTful API design
+- JWT authentication patterns
+- MongoDB schema design
+- React component architecture
+- Production deployment practices
+- Security best practices
+- Professional code organization
+
+## 📝 License
+
+This project is licensed under the MIT License.
+
+## 👤 Author
+
+**Aender Binoto**
+- GitHub: [@aenderb](https://github.com/aenderb)
+- Project: [Around The U.S.](https://github.com/aenderb/web_project_around_express)
 
 ---
 
-Desenvolvido por Aender Binoto
+⭐ **Star this repository** if you found it helpful!
