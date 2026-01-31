@@ -47,7 +47,6 @@ function App() {
       });
       setIsInfoTooltipOpen(true);
     } catch (err) {
-      console.error(err + " - Erro ao registrar usuário");
       setInfoTooltipStatus({
         isSuccess: false,
         message: "Ops, algo deu errado!\nPor favor, tente novamente.",
@@ -81,7 +80,6 @@ function App() {
           navigate("/");
         }
       } catch (err) {
-        console.error(err + " - Erro ao fazer login");
         setInfoTooltipStatus({
           isSuccess: false,
           message: "Ops, algo deu errado!\nPor favor, tente novamente.",
@@ -89,7 +87,7 @@ function App() {
         setIsInfoTooltipOpen(true);
       }
     },
-    [navigate],
+    [navigate, processCards],
   );
 
   const handleSignOut = useCallback(() => {
@@ -117,7 +115,6 @@ function App() {
         setCards(processCards(cardsData, userData._id));
         setIsLoggedIn(true);
       } catch (err) {
-        console.error(err + " - Erro ao verificar token");
         localStorage.removeItem("token");
         localStorage.removeItem("email");
         setIsLoggedIn(false);
@@ -145,7 +142,6 @@ function App() {
         setCards((prevCards) => prevCards.filter((c) => c._id !== card._id));
         handleClosePopup();
       } catch (err) {
-        console.error(err + " - Erro ao deletar card");
         handleClosePopup();
 
         // Verifica se é erro de permissão (403)
@@ -178,7 +174,7 @@ function App() {
           prevCards.map((c) => (c._id === card._id ? processedCard : c)),
         );
       } catch (err) {
-        console.error(err + " - Erro ao alterar status de like");
+        // Silenciosamente falha
       }
     },
     [currentUser._id],
@@ -192,7 +188,7 @@ function App() {
         setCurrentUser(newData);
         handleClosePopup();
       } catch (err) {
-        console.error(err + " - Erro ao atualizar informações do usuário");
+        // Silenciosamente falha
       } finally {
         setIsLoadingUserInfo(false);
       }
@@ -212,7 +208,7 @@ function App() {
         setCards((prevCards) => [processedCard, ...prevCards]);
         handleClosePopup();
       } catch (err) {
-        console.error(err + " - Erro ao adicionar novo card");
+        // Silenciosamente falha
       } finally {
         setIsLoadingAddCard(false);
       }
@@ -227,7 +223,7 @@ function App() {
         const newData = await api.updateAvatar(data);
         setCurrentUser(newData);
       } catch (err) {
-        console.error(err + " - Erro ao atualizar avatar do usuário");
+        // Silenciosamente falha
       } finally {
         setIsLoadingAvatar(false);
         handleClosePopup();

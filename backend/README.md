@@ -94,13 +94,29 @@ npm install
 ```
 
 3. Configure as variáveis de ambiente:
-Crie um arquivo `.env` na raiz do projeto com as seguintes variáveis:
+
+**Para Desenvolvimento:**
+Crie um arquivo `.env.development` na raiz do projeto:
 ```env
 PORT=3000
 MONGODB_URI=mongodb://localhost:27017/aroundb
+ALLOWED_ORIGINS=http://localhost:5173
+JWT_SECRET=your-secret-key-here
 ```
 
-**Nota:** Substitua a `MONGODB_URI` pela sua string de conexão do MongoDB Atlas ou outra instância do MongoDB.
+**Para Produção:**
+Crie um arquivo `.env.production` na raiz do projeto:
+```env
+PORT=3000
+MONGODB_URI=sua-uri-mongodb-producao
+ALLOWED_ORIGINS=https://seu-dominio.com
+JWT_SECRET=your-production-secret-key
+```
+
+**Nota:** 
+- Substitua a `MONGODB_URI` pela sua string de conexão do MongoDB
+- Gere um `JWT_SECRET` seguro para produção
+- Os arquivos `.env.*` não devem ser commitados (já estão no .gitignore)
 
 4. Execute o projeto em modo desenvolvimento:
 ```bash
@@ -116,9 +132,20 @@ O servidor estará rodando em `http://localhost:3000`
 
 ## 🧪 Scripts Disponíveis
 
-- `npm run dev` - Inicia o servidor com Nodemon (hot reload)
-- `npm start` - Inicia o servidor em modo produção
+- `npm run dev` - Inicia o servidor com Nodemon em modo desenvolvimento (NODE_ENV=development)
+- `npm start` - Inicia o servidor em modo produção (NODE_ENV=production)
 - `npm run lint` - Executa o ESLint para verificar o código
+
+## 🔒 Segurança e Autenticação
+
+- **JWT (JSON Web Tokens)** - Sistema de autenticação stateless
+- **bcrypt** - Hash de senhas para armazenamento seguro
+- **Rate Limiting** - Proteção contra ataques de força bruta
+  - Autenticação: 100 tentativas em dev / 5 em produção (15 minutos)
+  - API Geral: 100 requisições por IP (15 minutos)
+- **CORS** - Controle de origens permitidas
+- **Trust Proxy** - Suporte para deployment atrás de proxies (nginx, cloudflare)
+- **Celebrate/Joi** - Validação de dados de entrada com mongoose ObjectId
 
 ## 👨‍💻 Autor
 

@@ -147,16 +147,30 @@ src/
 - `POST /signin` - Login de usuário
 - `GET /users/me` - Informações do usuário autenticado
 
-**API de Fotos**: `https://around-api.pt-br.tripleten-services.com/v1`
+## APIs Utilizadas
 
-- `GET /users/me` - Dados do usuário
-- `GET /cards` - Lista de cards
-- `POST /cards` - Criar novo card
-- `DELETE /cards/:id` - Deletar card
-- `PUT /cards/:id/likes` - Adicionar like
-- `DELETE /cards/:id/likes` - Remover like
+O projeto se conecta a uma API REST própria para gerenciamento de usuários e cards.
+
+**Backend Local (Desenvolvimento)**: `http://localhost:3000`
+**Backend Produção**: `https://api.euaafora.pualo.com`
+
+### Endpoints Disponíveis
+
+**Autenticação:**
+- `POST /signup` - Registro de novo usuário
+- `POST /signin` - Login de usuário
+
+**Usuários (Protegido):**
+- `GET /users/me` - Dados do usuário autenticado
 - `PATCH /users/me` - Atualizar perfil
 - `PATCH /users/me/avatar` - Atualizar avatar
+
+**Cards (Protegido):**
+- `GET /cards` - Lista de cards
+- `POST /cards` - Criar novo card
+- `DELETE /cards/:cardId` - Deletar card
+- `PUT /cards/:cardId/likes` - Adicionar like
+- `DELETE /cards/:cardId/likes` - Remover like
 
 ## Como Executar
 
@@ -166,24 +180,25 @@ src/
 
 ### Configuração de Variáveis de Ambiente
 
-O projeto utiliza variáveis de ambiente para armazenar URLs da API e tokens de autenticação. Siga os passos abaixo:
+O projeto utiliza diferentes arquivos de ambiente para desenvolvimento e produção:
 
-1. **Copie o arquivo de exemplo**:
-   ```bash
-   cp .env.example .env
-   ```
+**Para Desenvolvimento:**
+O arquivo `.env.development` é usado automaticamente com `npm run dev`:
+```env
+VITE_API_BASE_URL=http://localhost:3000
+```
 
-2. **Preencha as variáveis no arquivo `.env`**:
-   ```env
-   VITE_API_AUTH_URL=https://se-register-api.en.tripleten-services.com/v1
-   VITE_API_BASE_URL=https://around-api.pt-br.tripleten-services.com/v1
-   VITE_API_TOKEN=seu-token-aqui
-   ```
+**Para Produção:**
+O arquivo `.env.production` é usado automaticamente com `npm run build`:
+```env
+VITE_API_BASE_URL=https://api.euaafora.pualo.com
+```
 
-3. **Importante**: 
-   - O arquivo `.env` **não deve** ser commitado no git (já está no `.gitignore`)
-   - O arquivo `.env.example` serve como template para a equipe
-   - Variáveis no Vite devem começar com `VITE_` para serem expostas ao cliente
+**Importante**: 
+- Os arquivos `.env.*` **não devem** ser commitados no git (já estão no `.gitignore`)
+- O arquivo `.env.example` serve como template para a equipe
+- Variáveis no Vite devem começar com `VITE_` para serem expostas ao cliente
+- O Vite automaticamente carrega o arquivo correto baseado no modo de execução
 
 ### Instalação
 ```bash
