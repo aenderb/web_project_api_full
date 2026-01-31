@@ -11,6 +11,7 @@ import { useState, useEffect, useCallback } from "react";
 import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import { api } from "../utils/api";
 import * as auth from "../utils/auth";
+import * as storage from "../utils/localStorage";
 import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
 
 function App() {
@@ -46,7 +47,7 @@ function App() {
         message: "Vitória! Você se registrou com sucesso.",
       });
       setIsInfoTooltipOpen(true);
-    } catch (err) {
+    } catch {
       setInfoTooltipStatus({
         isSuccess: false,
         message: "Ops, algo deu errado!\nPor favor, tente novamente.",
@@ -67,7 +68,7 @@ function App() {
       try {
         const data = await auth.login(email, password);
         if (data.token) {
-          localStorage.setItem("token", data.token);
+          storage.setToken(data.token);
           setIsLoggedIn(true);
 
           // Carregar dados do usuário após login
@@ -79,7 +80,7 @@ function App() {
 
           navigate("/");
         }
-      } catch (err) {
+      } catch {
         setInfoTooltipStatus({
           isSuccess: false,
           message: "Ops, algo deu errado!\nPor favor, tente novamente.",
@@ -91,7 +92,7 @@ function App() {
   );
 
   const handleSignOut = useCallback(() => {
-    localStorage.removeItem("token");
+    storage.clearAuthData();
     setIsLoggedIn(false);
     setCurrentUser({});
     setCards([]);
@@ -101,7 +102,7 @@ function App() {
   useEffect(() => {
     const loadInitialData = async () => {
       try {
-        const token = localStorage.getItem("token");
+        const token = storage.getToken();
         if (!token) {
           setIsCheckingToken(false);
           return;
@@ -114,9 +115,8 @@ function App() {
         setCurrentUser(userData);
         setCards(processCards(cardsData, userData._id));
         setIsLoggedIn(true);
-      } catch (err) {
-        localStorage.removeItem("token");
-        localStorage.removeItem("email");
+      } catch {
+        storage.clearAuthData();
         setIsLoggedIn(false);
       } finally {
         setIsCheckingToken(false);
@@ -124,7 +124,7 @@ function App() {
     };
 
     loadInitialData();
-  }, []);
+  }, [processCards]);
 
   const handleOpenPopup = useCallback((popupData) => {
     setPopup(popupData);
@@ -173,8 +173,8 @@ function App() {
         setCards((prevCards) =>
           prevCards.map((c) => (c._id === card._id ? processedCard : c)),
         );
-      } catch (err) {
-        // Silenciosamente falha
+      } catch {
+        // Ignora erro de like
       }
     },
     [currentUser._id],
@@ -187,8 +187,8 @@ function App() {
         const newData = await api.setUserInfo(data);
         setCurrentUser(newData);
         handleClosePopup();
-      } catch (err) {
-        // Silenciosamente falha
+      } catch {
+        // Ignora erro de atualização
       } finally {
         setIsLoadingUserInfo(false);
       }
@@ -207,8 +207,8 @@ function App() {
         };
         setCards((prevCards) => [processedCard, ...prevCards]);
         handleClosePopup();
-      } catch (err) {
-        // Silenciosamente falha
+      } catch {
+        // Ignora erro de criação
       } finally {
         setIsLoadingAddCard(false);
       }
@@ -222,8 +222,8 @@ function App() {
       try {
         const newData = await api.updateAvatar(data);
         setCurrentUser(newData);
-      } catch (err) {
-        // Silenciosamente falha
+      } catch {
+        // Ignora erro de avatar
       } finally {
         setIsLoadingAvatar(false);
         handleClosePopup();
