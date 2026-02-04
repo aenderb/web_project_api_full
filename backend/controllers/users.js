@@ -1,4 +1,4 @@
-const { bcrypt, genSalt, compare } = require("bcryptjs");
+const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const { HTTP_STATUS } = require("../utils/constants");
@@ -47,7 +47,7 @@ const getCurrentUser = async (req, res, next) => {
 const createUser = async (req, res, next) => {
   try {
     const { name, about, avatar, email, password } = req.body;
-    const salt = await genSalt(10);
+    const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
     const user = await User.create({
       name,
@@ -80,7 +80,7 @@ const login = async (req, res, next) => {
     }
 
     // Verifica a senha
-    const isPasswordValid = await compare(password, user.password);
+    const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
       throw new UnauthorizedError("Email ou senha incorretos.");
